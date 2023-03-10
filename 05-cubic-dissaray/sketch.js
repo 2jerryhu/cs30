@@ -5,6 +5,46 @@
 // Extra for Experts:
 // - describe what you did to take this project "above and beyond"
 
+// let boxes = [];
+
+// function setup() {
+//   createCanvas(windowWidth, windowHeight);
+//   rectMode(CENTER);
+//   angleMode(DEGREES);
+
+//   for (let y = 0; y < height; y+=50) {
+//     for (let x = 0; x < width; x += 50){
+//       spawnBox(x, y, 50, random(y));
+//     }
+//   }
+
+// }
+
+// function draw() {
+//   background(220);
+//   for (let i = 0; i < boxes.length; i++){
+//     displayBox(boxes[i]);
+//   }
+// }
+
+// function displayBox(myBox){
+//   push(); // saving the transformation matrix
+//   translate(myBox.x, myBox.y);
+//   rotate(myBox.rotation);
+//   square(0, 0, myBox.size);
+//   pop(); // resetting the transformation matrix
+// }
+
+// function spawnBox(theX, theY, theSize, howRotated) {
+//   let someBox = {
+//     x: theX,
+//     y: theY,
+//     size: theSize,
+//     rotation: howRotated,
+//   };
+//   boxes.push(spawnBox);
+// }
+
 let boxes = [];
 
 function setup() {
@@ -12,27 +52,29 @@ function setup() {
   rectMode(CENTER);
   angleMode(DEGREES);
 
-  for (let y = 0; y < height; y+=50) {
-    for (let x = 0; x < width; x += 50){
-      spawnBox(x, y, 50, random(y));
+
+  for (let y = 0; y < height; y += 50) {
+    for (let x = 0; x < width; x += 50) {
+      spawnBox(x, y, 50, random(y*0.2));
     }
   }
-
 }
 
 function draw() {
   background(220);
-  for (let i = 0; i < boxes.length; i++){
+
+  //display all boxes
+  for (let i = 0; i < boxes.length; i++) {
     displayBox(boxes[i]);
   }
 }
 
-function displayBox(myBox){
-  push(); // saving the transformation matrix
+function displayBox(myBox) {
+  push(); //saving the transformation matrix
   translate(myBox.x, myBox.y);
   rotate(myBox.rotation);
   square(0, 0, myBox.size);
-  pop(); // resetting the transformation matrix
+  pop(); //resetting the transformation matrix
 }
 
 function spawnBox(theX, theY, theSize, howRotated) {
@@ -42,5 +84,5 @@ function spawnBox(theX, theY, theSize, howRotated) {
     size: theSize,
     rotation: howRotated,
   };
-  boxes.push(spawnBox);
+  boxes.push(someBox);
 }
