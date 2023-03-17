@@ -1,9 +1,9 @@
 # Demos
-- [Moving rectangle] (01-moving-rectangle)
-- [Generative Art] (02-generative-art)
-- [Bouncing Ball] (03-bouncing-balls)
+- [Moving rectangle](01-moving-rectangle)
+- [Generative Art](02-generative-art)
+- [Bouncing Ball](03-bouncing-balls)
 - [Cubic Disarray](05-cubic-disarray)
-- [Perlin and Timing] (08-perlin)
+- [Perlin and Timing](08-perlin)
 
 ## Projects
 - [Array and Object Notation](Array-Assignment)
