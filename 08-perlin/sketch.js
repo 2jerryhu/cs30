@@ -14,7 +14,7 @@ function mousePressed(){
 }
 
 function draw() {
-  // background("white");
+  background("white");
   for (let bubble of theBubbles) {
     bubble.x = noise(bubble.time) * width;
     bubble.y = noise(bubble.time + 300) * height;
