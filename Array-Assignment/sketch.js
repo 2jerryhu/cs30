@@ -1,4 +1,7 @@
 // donut
+
+// wave visualizer
+
 let donut = [];
 // function setup() {
 //   createCanvas(windowWidth, windowHeight, WEBGL);
