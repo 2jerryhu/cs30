@@ -39,6 +39,9 @@ function keyTyped() {
   else if (key === " ") {
     grid = updateGrid();
   }
+  else if (key === "a"){
+    autoUpdate = !autoUpdate;
+  }
 }
 
 function mousePressed() {
