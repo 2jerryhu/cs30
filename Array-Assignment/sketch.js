@@ -1,19 +1,6 @@
-// donut
+// piano
 
-// wave visualizer
-
-let donut = [];
-// function setup() {
-//   createCanvas(windowWidth, windowHeight, WEBGL);
-//   describe('a rotating white torus');
-// }
-
-// function draw() {
-//   background(205, 102, 94);
-//   rotateX(frameCount * 0.05);
-//   rotateY(frameCount * 0.01);
-//   torus(50, 55);
-// }
+let pianoKey = [];
 
 function setup(){
   createCanvas(windowWidth, windowHeight);
@@ -23,13 +10,13 @@ function draw(){
 
 }
 
-function spawnBubble() {
-  let donut_properties = {
-    x: random(width),
-    y: random(height),
+function makeKey() {
+  let keyProperties = {
+    x: random([0, 1]),
+    y: random([0, 1]),
     size: random(5, 50),
     color: color(random(255), random(255), random(255), random(255)),
     time: random(1000),
   };
-  donut.push(donut_properties);
+  pianoKey.push(keyProperties);
 }
