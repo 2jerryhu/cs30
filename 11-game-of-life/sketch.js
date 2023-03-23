@@ -9,6 +9,7 @@ const ROWS = 10;
 const COLS = 10;
 let grid;
 let cellSize;
+let autoUpdate = true;
 
 function setup() {
   createCanvas(windowWidth, windowHeight);
@@ -67,6 +68,7 @@ function updateGrid() {
       }
 
       neighbours -= grid[y][x];
+
       if (grid[y][x] === 1) {
         if (neighbours === 2 || neighbours === 3) {
           nextTurn[y][x] = 1;
@@ -80,14 +82,15 @@ function updateGrid() {
         if (neighbours === 3) {
           nextTurn[y][x] = 1;
         }
+        else {
+          nextTurn[y][x] = 0;
+        }
       }
-      else {
-        nextTurn[y][x] = 0;
-      }
+      
 
     }
   }
-  
+
   return nextTurn;
 }
 
