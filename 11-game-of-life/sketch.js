@@ -5,11 +5,16 @@
 // Extra for Experts:
 // - describe what you did to take this project "above and beyond"
 
-const ROWS = 10;
-const COLS = 10;
+const ROWS = 40;
+const COLS = 40;
 let grid;
 let cellSize;
 let autoUpdate = true;
+let gosperGun; 
+
+function preload() {
+  gosperGun = loadJSON("gosper.json");
+}
 
 function setup() {
   createCanvas(windowWidth, windowHeight);
@@ -24,9 +29,9 @@ function setup() {
 
 function draw() {
   background(220);
-  if (autoUpdate && frameCount % 10 === 0) {
+  if (autoUpdate && frameCount % 5 === 0) {
     grid = updateGrid();
-  }
+  } 
   displayGrid(grid);
 }
 
@@ -42,6 +47,10 @@ function keyTyped() {
   }
   else if (key === "a"){
     autoUpdate = !autoUpdate;
+  }
+  else if (key === "g") {
+    // assumes 40x40
+    grid = gosperGun; 
   }
 }
 
