@@ -27,22 +27,22 @@ function draw() {
   displayGrid();
 }
 
+function displayGrid() {
+  for (let y = 0; y < ROWS; y++) {
+    for (let x = 0; x < COLS; x++) {
+      fill("white");
+      rect(x * cellSize, y * cellSize, cellSize, cellSize);
+    }
+  }
+}
+
 function createGrid(ROWS, COLS) {
   let newGrid = [];
   for (let y = 0; y < ROWS; y++) {
     newGrid.push([]);
     for (let x = 0; x < COLS; x++) {
-      newGrid[y].push([]);
+      newGrid[y].push();  
     }
   }
-  return newGrid();
-}
-
-function displayGrid() {
-  for (let y = 0; y < ROWS; y++) {
-    for (let x = 0; x < COLS; x++) {
-      fill("grey");
-      rect(x * cellSize, y * cellSize, cellSize. cellSize);
-    }
-  }
+  return newGrid;
 }

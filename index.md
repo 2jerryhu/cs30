@@ -8,6 +8,7 @@
 - [Grid demo](09-2d-grid)
 - [Color Game](10-color)
 - [Game of life](11-game-of-life)
+- [Character in Grid](12-chracter-in-grid)
 
 ## Projects
 - [Array and Object Notation](Array-Assignment)
