@@ -1,4 +1,4 @@
-// piano
+// random sorter
 
 let pianoKey = [];
 

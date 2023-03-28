@@ -9,30 +9,34 @@ const ROWS = 4;
 const COLS = 4;
 let grid;
 let cellSize; 
-let cellGap; 
+let cellGapX = 20;
+let cellGapY = 20;
 
 function setup() {
   createCanvas(windowWidth, windowHeight);
   grid = createGrid(ROWS, COLS);
   if (width < height) {
-    cellSize = width/COLS;
+    cellSize = width/COLS - cellGapX;
   }
   if (width > height) {
-    cellSize = height/ROWS;
+    cellSize = height/ROWS - cellGapY;
   }
+  background(95);
+  displayGrid();
 }
 
 function draw() {
-  background(220);
-  displayGrid();
 }
 
 function displayGrid() {
   for (let y = 0; y < ROWS; y++) {
     for (let x = 0; x < COLS; x++) {
-      fill("white");
-      rect(x * cellSize, y * cellSize, cellSize, cellSize);
+      fill(168);
+      rect(x * cellSize + cellGapX, y * cellSize + cellGapY, cellSize, cellSize);
+      cellGapX += 20;
     }
+    cellGapY += 20;
+    cellGapX += - 80;
   }
 }
 
