@@ -11,18 +11,30 @@ let grid;
 let cellSize; 
 let cellGapX = 20;
 let cellGapY = 20;
+let two, four, eight, sixteen, thirtytwo, sixtyfour, onetwentyeight, twofiftysix, fivetwelve, tentwentyfour, twentyfortyeight, fortynintysix, eightyonenintytwo;
+
+let squares = [1];
+
+function preload() {
+  for (let i = 1; i <= 13; i++) {
+    let num = 2 ** i;
+    num = String(num).concat(".png");
+    squares.push(loadImage("assets/".concat(num)));
+  }
+}
 
 function setup() {
   createCanvas(windowWidth, windowHeight);
   grid = createGrid(ROWS, COLS);
   if (width < height) {
-    cellSize = width/COLS - cellGapX;
+    cellSize = width/COLS - cellGapX * 1.2;
   }
   if (width > height) {
-    cellSize = height/ROWS - cellGapY;
+    cellSize = height/ROWS - cellGapY * 1.2;
   }
   background(95);
   displayGrid();
+  spawnBlock();
 }
 
 function draw() {
@@ -36,8 +48,10 @@ function displayGrid() {
       cellGapX += 20;
     }
     cellGapY += 20;
-    cellGapX += - 80;
+    cellGapX += -80;
   }
+  cellGapX = 20;
+  cellGapY = 20;
 }
 
 function createGrid(ROWS, COLS) {
@@ -49,4 +63,10 @@ function createGrid(ROWS, COLS) {
     }
   }
   return newGrid;
+}
+
+function spawnBlock() {
+  let randomX = random([0, 1, 2, 3]);
+  let randomY = random([0, 1, 2, 3]);
+  image(squares[1], randomX * (cellSize + cellGapX) + cellGapX, randomY * (cellSize + cellGapY) + cellGapY, cellSize, cellSize);
 }
