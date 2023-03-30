@@ -1,22 +1,23 @@
 // random sorter
 
-let pianoKey = [];
+let blocks = [];
 
 function setup(){
   createCanvas(windowWidth, windowHeight);
+  makeBlock
 }
 
 function draw(){
 
 }
 
-function makeKey() {
-  let keyProperties = {
-    x: random([0, 1]),
-    y: random([0, 1]),
+function makeBlock() {
+  let blockProperties = {
+    width: 1,
+    height: random(windowHeight),
     size: random(5, 50),
     color: color(random(255), random(255), random(255), random(255)),
     time: random(1000),
   };
-  pianoKey.push(keyProperties);
+  blocks.push(blockProperties);
 }
