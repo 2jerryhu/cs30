@@ -60,7 +60,7 @@ function createGrid(ROWS, COLS) {
   for (let y = 0; y < ROWS; y++) {
     newGrid.push([]);
     for (let x = 0; x < COLS; x++) {
-      newGrid[y].push([]);  
+      newGrid[y].push([0]);  
     }
   }
   return newGrid;
@@ -71,17 +71,19 @@ function spawnBlock() {
   let randomY = random([0, 1, 2, 3]);
   for (let y = 0; y < ROWS; y++) {
     for (let x = 0; x < COLS; x++) {
-      // if (grid[y][x] !===  ) {
-
-      // }
+      if (grid[y][x] !== 0 ) {
+        
+      }
 
     }
   }
   if (random(10) > 1) {
     image(squares[1], randomX * (cellSize + cellGapX) + cellGapX, randomY * (cellSize + cellGapY) + cellGapY, cellSize, cellSize);
+    grid[randomX][randomY] = 1;
   }
   else {
     image(squares[2], randomX * (cellSize + cellGapX) + cellGapX, randomY * (cellSize + cellGapY) + cellGapY, cellSize, cellSize);
+    grid[randomX][randomY] = 2;
   }
 }
 
