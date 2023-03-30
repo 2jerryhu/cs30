@@ -25,6 +25,7 @@ function preload() {
 
 function setup() {
   createCanvas(windowWidth, windowHeight);
+  
   grid = createGrid(ROWS, COLS);
   if (width < height) {
     cellSize = width/COLS - cellGapX * 1.2;
@@ -59,7 +60,7 @@ function createGrid(ROWS, COLS) {
   for (let y = 0; y < ROWS; y++) {
     newGrid.push([]);
     for (let x = 0; x < COLS; x++) {
-      newGrid[y].push();  
+      newGrid[y].push([]);  
     }
   }
   return newGrid;
@@ -68,5 +69,22 @@ function createGrid(ROWS, COLS) {
 function spawnBlock() {
   let randomX = random([0, 1, 2, 3]);
   let randomY = random([0, 1, 2, 3]);
-  image(squares[1], randomX * (cellSize + cellGapX) + cellGapX, randomY * (cellSize + cellGapY) + cellGapY, cellSize, cellSize);
+  for (let y = 0; y < ROWS; y++) {
+    for (let x = 0; x < COLS; x++) {
+      // if (grid[y][x] !===  ) {
+
+      // }
+
+    }
+  }
+  if (random(10) > 1) {
+    image(squares[1], randomX * (cellSize + cellGapX) + cellGapX, randomY * (cellSize + cellGapY) + cellGapY, cellSize, cellSize);
+  }
+  else {
+    image(squares[2], randomX * (cellSize + cellGapX) + cellGapX, randomY * (cellSize + cellGapY) + cellGapY, cellSize, cellSize);
+  }
+}
+
+function beginGame() {
+
 }
