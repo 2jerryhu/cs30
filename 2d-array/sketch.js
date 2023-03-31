@@ -67,19 +67,24 @@ function createGrid(ROWS, COLS) {
 }
 
 function spawnBlock() {
-  let randomX = random([0, 1, 2, 3]);
-  let randomY = random([0, 1, 2, 3]);
+  let randomX = [0, 1, 2, 3];
+  let randomY = [0, 1, 2, 3];
   for (let y = 0; y < ROWS; y++) {
+    console.log(y);
     for (let x = 0; x < COLS; x++) {
+      console.log(x);
+      console.log(grid[y][x]);
       if (grid[y][x] !== 0 ) {
-        
+        randomX.remove(x);
+        console.log(randomX);
+        // randomY.splice(y, 1);
       }
-
     }
   }
+  console.log(randomX);
   if (random(10) > 1) {
     image(squares[1], randomX * (cellSize + cellGapX) + cellGapX, randomY * (cellSize + cellGapY) + cellGapY, cellSize, cellSize);
-    grid[randomX][randomY] = 1;
+    // grid[randomX][randomY] = 1;
   }
   else {
     image(squares[2], randomX * (cellSize + cellGapX) + cellGapX, randomY * (cellSize + cellGapY) + cellGapY, cellSize, cellSize);
