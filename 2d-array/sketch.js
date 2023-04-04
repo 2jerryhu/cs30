@@ -35,7 +35,7 @@ function setup() {
   }
   background(95);
   displayGrid();
-  spawnBlock();
+  beginGame();
 }
 
 function draw() {
@@ -60,7 +60,7 @@ function createGrid(ROWS, COLS) {
   for (let y = 0; y < ROWS; y++) {
     newGrid.push([]);
     for (let x = 0; x < COLS; x++) {
-      newGrid[y].push([0]);  
+      newGrid[y].push(0);  
     }
   }
   return newGrid;
@@ -70,25 +70,20 @@ function spawnBlock() {
   let randomX = [0, 1, 2, 3];
   let randomY = [0, 1, 2, 3];
   for (let y = 0; y < ROWS; y++) {
-    console.log(y);
     for (let x = 0; x < COLS; x++) {
-      console.log(x);
-      console.log(grid[y][x]);
-      if (grid[y][x] !== 0 ) {
-        randomX.remove(x);
-        console.log(randomX);
-        // randomY.splice(y, 1);
+      if (grid[y][x] !== 0) {
+        randomX.splice(x, 1);
+        randomY.splice(y, 1);
       }
     }
   }
-  console.log(randomX);
   if (random(10) > 1) {
-    image(squares[1], randomX * (cellSize + cellGapX) + cellGapX, randomY * (cellSize + cellGapY) + cellGapY, cellSize, cellSize);
-    // grid[randomX][randomY] = 1;
+    image(squares[1], randomX[Math.floor(random(randomX.length))] * (cellSize + cellGapX) + cellGapX, randomY[Math.floor(random(randomY.length))] * (cellSize + cellGapY) + cellGapY, cellSize, cellSize);
+    grid[randomX[Math.floor(random(randomX.length))]][randomY[Math.floor(random(randomY.length))]] = 1;
   }
   else {
-    image(squares[2], randomX * (cellSize + cellGapX) + cellGapX, randomY * (cellSize + cellGapY) + cellGapY, cellSize, cellSize);
-    grid[randomX][randomY] = 2;
+    image(squares[2], randomX[Math.floor(random(randomX.length))] * (cellSize + cellGapX) + cellGapX, randomY[Math.floor(random(randomY.length))] * (cellSize + cellGapY) + cellGapY, cellSize, cellSize);
+    grid[randomX[Math.floor(random(randomX.length))]][randomY[Math.floor(random(randomY.length))]] = 2;
   }
 }
 
