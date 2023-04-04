@@ -4,11 +4,13 @@ let blocks = [];
 
 function setup(){
   createCanvas(windowWidth, windowHeight);
-  makeBlock
+  background("black");
+  // makeBlock();
 }
 
 function draw(){
-
+  noStroke();
+  rect(100, 0, 5, height);
 }
 
 function makeBlock() {
