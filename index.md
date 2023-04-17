@@ -10,6 +10,7 @@
 - [Game of life](11-game-of-life)
 - [Character in Grid](12-chracter-in-grid)
 - [Sudoku](14-sudoku)
+- [WalkerOOP](15-walking-OOP)
 
 ## Projects
 - [Array and Object Notation](Array-Assignment)
