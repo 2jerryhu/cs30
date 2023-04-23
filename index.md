@@ -11,6 +11,8 @@
 - [Character in Grid](12-chracter-in-grid)
 - [Sudoku](14-sudoku)
 - [WalkerOOP](15-walking-OOP)
+- [Fireworks OOP](16-fireworks-OOP)
+- [Ball Array OOP](17-ball-array-OOP)
 
 ## Projects
 - [Array and Object Notation](Array-Assignment)
