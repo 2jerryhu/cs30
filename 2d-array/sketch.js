@@ -39,6 +39,13 @@ function setup() {
 }
 
 function draw() {
+  // if (keyIsDown(40)) {
+  //   moveDown();
+  // } 
+}
+
+function mousePressed(){
+  moveDown();
 }
 
 function displayGrid() {
@@ -69,24 +76,68 @@ function createGrid(ROWS, COLS) {
 function spawnBlock() {
   let randomX = [0, 1, 2, 3];
   let randomY = [0, 1, 2, 3];
-  for (let y = 0; y < ROWS; y++) {
-    for (let x = 0; x < COLS; x++) {
-      if (grid[y][x] !== 0) {
+  console.log(grid);
+  for (let x = 0; x < COLS; x++) {
+    for (let y = 0; y < ROWS; y++) {
+      if (grid[x][y] !== 0) {
         randomX.splice(x, 1);
         randomY.splice(y, 1);
       }
     }
   }
   if (random(10) > 1) {
-    image(squares[1], randomX[Math.floor(random(randomX.length))] * (cellSize + cellGapX) + cellGapX, randomY[Math.floor(random(randomY.length))] * (cellSize + cellGapY) + cellGapY, cellSize, cellSize);
-    grid[randomX[Math.floor(random(randomX.length))]][randomY[Math.floor(random(randomY.length))]] = 1;
+    let theX = randomX[Math.floor(random(randomX.length))]
+    let theY = randomY[Math.floor(random(randomY.length))]
+    image(squares[1], theX * (cellSize + cellGapX) + cellGapX, theY * (cellSize + cellGapY) + cellGapY, cellSize, cellSize);
+    
+    // just array notation things
+    grid[theY][theX] = 1;
   }
   else {
-    image(squares[2], randomX[Math.floor(random(randomX.length))] * (cellSize + cellGapX) + cellGapX, randomY[Math.floor(random(randomY.length))] * (cellSize + cellGapY) + cellGapY, cellSize, cellSize);
-    grid[randomX[Math.floor(random(randomX.length))]][randomY[Math.floor(random(randomY.length))]] = 2;
+    let theX = randomX[Math.floor(random(randomX.length))]
+    let theY = randomY[Math.floor(random(randomY.length))]
+    image(squares[2], theX * (cellSize + cellGapX) + cellGapX, theY * (cellSize + cellGapY) + cellGapY, cellSize, cellSize);
+    grid[theY][theX] = 2;
   }
 }
 
 function beginGame() {
+  spawnBlock();
+  // spawnBlock();
+}
 
+function moveDown() {
+  let counter = 0;
+  for (let y = 0; y < ROWS; y++) {
+    for (let x = 0; x < COLS; x++) {
+      if (grid[y][x] !== 0) {
+        // for loop? have to use y + 1
+        let i = y;
+        if (grid[3][x] === 0) {
+        
+          while (i < 3) {
+          
+            if (grid[i][x] === 0) {
+              
+            }
+            i++;
+          }
+          grid[3][x] = grid[y][x];
+          console.log(grid[3][x]);
+        }
+        else if (grid[2][x] !== 0) {
+          grid[2][x] = grid[y][x];
+          console.log(grid[2][x]);
+        } 
+        else if (grid[1][x] !== 0) {
+          grid[1][x] = grid[y][x];
+          console.log(grid[1][x]);
+        }
+        else {
+          grid[0][x] = grid[y][x];
+          console.log(grid[0][x]);
+        }
+      }
+    }
+  }
 }
