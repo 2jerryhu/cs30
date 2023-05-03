@@ -13,6 +13,7 @@
 - [WalkerOOP](15-walking-OOP)
 - [Fireworks OOP](16-fireworks-OOP)
 - [Ball Array OOP](17-ball-array-OOP)
+- [Using Timers](21-timers)
 
 ## Projects
 - [Array and Object Notation](Array-Assignment)
