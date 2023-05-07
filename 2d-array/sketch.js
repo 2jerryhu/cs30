@@ -107,22 +107,26 @@ function beginGame() {
 }
 
 function moveDown() {
-  let counter = 0;
   for (let y = 0; y < ROWS; y++) {
     for (let x = 0; x < COLS; x++) {
       if (grid[y][x] !== 0) {
-        // for loop? have to use y + 1
-        let i = y;
+        let i = y + 1;
+        let counter = 0;
+
         if (grid[3][x] === 0) {
-        
           while (i < 3) {
-          
+            counter = i;
             if (grid[i][x] === 0) {
-              
+              counter++
+              console.log(counter);
             }
             i++;
+            console.log(i);
           }
-          grid[3][x] = grid[y][x];
+          if (counter === i) {
+            grid[3][x] = grid[y][x];
+          }
+          console.log(grid[y][x]);
           console.log(grid[3][x]);
         }
         else if (grid[2][x] !== 0) {
