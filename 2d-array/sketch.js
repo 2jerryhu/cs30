@@ -86,35 +86,39 @@ function createGrid(ROWS, COLS) {
 }
 
 function spawnBlock() {
-  let notAllowedLocation = [];
+  let notAllowedLocation;
   let badCoordinates = [];
   let coordinates = []
   let counter = 0;
   let theX;
   let theY;
 
-  console.log(grid);
   for (let y = 0; y < ROWS; y++) {
     for (let x = 0; x < COLS; x++) {
       if (grid[y][x] !== 0) {
         badCoordinates.push([y, x]);
         notAllowedLocation.push(badCoordinates);
+        console.log(notAllowedLocation);
       }
     }
   }
  
-  while (counter !== notAllowedLocation.length) {
-    coordinates.pop();
-    coordinates.pop();
-    coordinates.push(Math.floor(random(4)))
-    coordinates.push(Math.floor(random(4)))
-    console.log(coordinates);
+  if (coordinates !== undefined) {
+    while (counter !== notAllowedLocation.length) {
+      coordinates.pop();
+      coordinates.pop();
+      coordinates.push(Math.floor(random(4)))
+      coordinates.push(Math.floor(random(4)))
+      console.log(coordinates);
 
-    counter = 0;
+      counter = 0;
 
-    for (let w = 0; w < notAllowedLocation.length; w++) {
-      if (notAllowedLocation[w][0] !== coordinates[0] || notAllowedLocation[w][1] !== coordinates[1]) {
-        counter ++;
+      for (let w = 0; w < notAllowedLocation.length; w++) {
+        if (notAllowedLocation[w][0] !== coordinates[0] || notAllowedLocation[w][1] !== coordinates[1]) {
+          console.log(notAllowedLocation[w][0]);
+          console.log(coordinates[0]);
+          counter ++;
+        }
       }
     }
   }
@@ -133,8 +137,7 @@ function spawnBlock() {
     theY = coordinates[0];
   }
 
-  console.log(theX);
-  console.log(theY);
+  console.log([theY, theX]);
 
   if (random(10) > 1) {
     image(squares[1], theX * (cellSize + cellGapX) + cellGapX, theY * (cellSize + cellGapY) + cellGapY, cellSize, cellSize);
