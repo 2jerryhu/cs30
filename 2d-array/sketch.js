@@ -12,6 +12,7 @@ let cellSize;
 let cellGapX = 20;
 let cellGapY = 20;
 let squares = [0];
+let action = 0;
 
 function preload() {
   for (let i = 1; i <= 13; i++) {
@@ -44,19 +45,27 @@ function draw() {
 function keyPressed(){
   if (keyCode === 40) {
     moveDown();
-    spawnBlock();
+    if (action !== 0) {
+      spawnBlock();
+    }
   }
   if (keyCode === 39) {
     moveRight();
-    spawnBlock();
+    if (action !== 0) {
+      spawnBlock();
+    }
   }
   if (keyCode === 38) {
     moveUp();
-    spawnBlock();
+    if (action !== 0) {
+      spawnBlock();
+    }
   }
   if (keyCode === 37) {
     moveLeft();
-    spawnBlock();
+    if (action !== 0) {
+      spawnBlock();
+    }
   }
 }
 
@@ -86,37 +95,33 @@ function createGrid(ROWS, COLS) {
 }
 
 function spawnBlock() {
-  let notAllowedLocation;
+  let notAllowedLocation = [];
   let badCoordinates = [];
   let coordinates = []
   let counter = 0;
   let theX;
   let theY;
-
+  
   for (let y = 0; y < ROWS; y++) {
     for (let x = 0; x < COLS; x++) {
       if (grid[y][x] !== 0) {
         badCoordinates.push([y, x]);
         notAllowedLocation.push(badCoordinates);
-        console.log(notAllowedLocation);
       }
     }
   }
- 
-  if (coordinates !== undefined) {
+  
+  if (notAllowedLocation !== []) {
     while (counter !== notAllowedLocation.length) {
       coordinates.pop();
       coordinates.pop();
       coordinates.push(Math.floor(random(4)))
       coordinates.push(Math.floor(random(4)))
-      console.log(coordinates);
-
+  
       counter = 0;
-
+  
       for (let w = 0; w < notAllowedLocation.length; w++) {
-        if (notAllowedLocation[w][0] !== coordinates[0] || notAllowedLocation[w][1] !== coordinates[1]) {
-          console.log(notAllowedLocation[w][0]);
-          console.log(coordinates[0]);
+        if (notAllowedLocation[0][w][0] !== coordinates[0] || notAllowedLocation[0][w][1] !== coordinates[1]) {
           counter ++;
         }
       }
@@ -136,8 +141,6 @@ function spawnBlock() {
   else {
     theY = coordinates[0];
   }
-
-  console.log([theY, theX]);
 
   if (random(10) > 1) {
     image(squares[1], theX * (cellSize + cellGapX) + cellGapX, theY * (cellSize + cellGapY) + cellGapY, cellSize, cellSize);
@@ -166,158 +169,244 @@ function resetGrid(){
 }
 
 function moveDown() {
+  let alreadyMerged = [];
+  action = 0;
+
   for (let y = ROWS - 1; y >= 0; y--) {
     for (let x = 0; x < COLS; x++) {
       if (grid[y][x] !== 0) {
         let i = y;
-        let availableIndex = 3;
+        let availableIndex;
+
+        if (y === 3) {
+          availableIndex = 3;
+        }
+        else {
+          availableIndex = i;
+        }
 
         while (i < 3) {
-          availableIndex = i;
           if (grid[i+1][x] === 0) {
             availableIndex++;
           }
           i++;
         }
-        
-        if (grid[y][x] === grid[i][x] && i - availableIndex === 1) {
-          mergeDown(y, x, i);
+
+        if (availableIndex !== 3) {
+          if (grid[y][x] === grid[availableIndex + 1][x]) {
+            mergeUpDown(y, x, availableIndex, alreadyMerged, 1);
+            action++;
+          }
+          else if (grid[availableIndex][x] !== grid[availableIndex + 1][x] && availableIndex !== y) {
+            grid[availableIndex][x] = grid[y][x];
+            grid[y][x] = 0;
+            image(squares[grid[availableIndex][x]], x * (cellSize + cellGapX) + cellGapX, availableIndex * (cellSize + cellGapY) + cellGapY, cellSize, cellSize);
+            action++
+          }
         }
-        else if (availableIndex === i && y !== 3) {
-          grid[i][x] = grid[y][x];
-          grid[y][x] = 0;
-          image(squares[grid[i][x]], x * (cellSize + cellGapX) + cellGapX, i * (cellSize + cellGapY) + cellGapY, cellSize, cellSize);
-        }
-        else if (i - availableIndex === 1 && i - y > 1 && grid[availableIndex][x] !== grid[i][x]){
+
+        else if (availableIndex === 3 && y !== 3) {
           grid[availableIndex][x] = grid[y][x];
-          grid[y][x] = 0; 
+          grid[y][x] = 0;
           image(squares[grid[availableIndex][x]], x * (cellSize + cellGapX) + cellGapX, availableIndex * (cellSize + cellGapY) + cellGapY, cellSize, cellSize);
+          action++;
         }
-      } 
+      }
     }
   }
 }
 
-function mergeDown(y, x, i) {
-  grid[y][x] = 0;
-  grid[i][x] = (grid[i][x]) + 1;
-  image(squares[grid[i][x]], x * (cellSize + cellGapX) + cellGapX, i * (cellSize + cellGapY) + cellGapY, cellSize, cellSize);
-}
-
 function moveUp() {
+  let alreadyMerged = [];
+  action = 0;
+  
   for (let y = 0; y < ROWS; y++) {
     for (let x = 0; x < COLS; x++) {
       if (grid[y][x] !== 0) {
         let i = y;
-        let availableIndex = 0;
+        let availableIndex;
+
+        if (y === 0) {
+          availableIndex = 0;
+        }
+        else {
+          availableIndex = i;
+        }
 
         while (i > 0) {
-          availableIndex = i;
-          if (grid[i-1][x] === 0) {
+          if (grid[i - 1][x] === 0) {
             availableIndex--;
           }
           i--;
         }
-        
-        if (grid[y][x] === grid[i][x] && availableIndex - i === 1) {
-          mergeUp(y, x, i);
+
+        if (availableIndex !== 0) {
+          if (grid[y][x] === grid[availableIndex - 1][x]) {
+            mergeUpDown(y, x, availableIndex, alreadyMerged, -1);
+            action++;
+          }
+          else if (grid[availableIndex][x] !== grid[availableIndex - 1][x] && availableIndex !== y) {
+            grid[availableIndex][x] = grid[y][x];
+            grid[y][x] = 0;
+            image(squares[grid[availableIndex][x]], x * (cellSize + cellGapX) + cellGapX, availableIndex * (cellSize + cellGapY) + cellGapY, cellSize, cellSize);
+            action++
+          }
         }
-        else if (availableIndex === i && y !== 0) {
-          grid[i][x] = grid[y][x];
-          grid[y][x] = 0;
-          image(squares[grid[i][x]], x * (cellSize + cellGapX) + cellGapX, i * (cellSize + cellGapY) + cellGapY, cellSize, cellSize);
-        }
-        else if (availableIndex - i === 1 && y - i > 1 && grid[availableIndex][x] !== grid[i][x]){
+
+        else if (availableIndex === 0 && y !== 0) {
           grid[availableIndex][x] = grid[y][x];
-          grid[y][x] = 0; 
+          grid[y][x] = 0;
           image(squares[grid[availableIndex][x]], x * (cellSize + cellGapX) + cellGapX, availableIndex * (cellSize + cellGapY) + cellGapY, cellSize, cellSize);
+          action++;
         }
       } 
     }
   }
 }
 
-function mergeUp(y, x, i) {
-  grid[y][x] = 0;
-  grid[i][x] = (grid[i][x]) + 1;
-  image(squares[grid[i][x]], x * (cellSize + cellGapX) + cellGapX, i * (cellSize + cellGapY) + cellGapY, cellSize, cellSize);
+function mergeUpDown(y, x, i, array, oneSign) {
+  let proceed = false;
+  if (array.length === 0) {
+    proceed = true;
+  }
+  else {
+    for (let nums in array) {
+      if (array[nums][0] !== i + oneSign && array[nums][1] !== x) {
+        proceed = true;  
+      }
+    }
+  }
+  if (proceed === true) {
+    grid[i + oneSign][x] = (grid[i + oneSign][x]) + 1;
+    grid[y][x] = 0;
+    image(squares[grid[i + oneSign][x]], x * (cellSize + cellGapX) + cellGapX, (i + oneSign) * (cellSize + cellGapY) + cellGapY, cellSize, cellSize);
+    array.push([i + oneSign, x]);
+  }
+  else {
+    grid[i][x] = grid[y][x];
+    image(squares[grid[i][x]], x * (cellSize + cellGapX) + cellGapX, i * (cellSize + cellGapY) + cellGapY, cellSize, cellSize);
+    grid[y][x] = 0;
+    console.log(grid[i][x]);
+  }
 }
 
 function moveRight() {
+  let alreadyMerged = [];
+  action = 0;
+
   for (let x = COLS - 1; x >= 0; x--) {
     for (let y = 0; y < ROWS; y++) {
       if (grid[y][x] !== 0) {
         let i = x;
-        let availableIndex = 3;
+        let availableIndex;
+
+        if (x === 3) {
+          availableIndex = 3;
+        }
+        else {
+          availableIndex = i;
+        }
 
         while (i < 3) {
-          availableIndex = i;
-          if (grid[y][i+1] === 0) {
+          if (grid[y][i + 1] === 0) {
             availableIndex++;
           }
           i++;
         }
-        
-        if (grid[y][x] === grid[y][i] && i - availableIndex === 1) {
-          mergeRight(y, x, i);
+
+        if (availableIndex !== 3) {
+          if (grid[y][x] === grid[y][availableIndex + 1]) {
+            mergeLeftRight(y, x, availableIndex, alreadyMerged, 1);
+            action++;
+          }
+          else if (grid[y][availableIndex] !== grid[y][availableIndex + 1] && availableIndex !== x) {
+            grid[y][availableIndex] = grid[y][x];
+            grid[y][x] = 0;
+            image(squares[grid[y][availableIndex]], availableIndex * (cellSize + cellGapX) + cellGapX, y * (cellSize + cellGapY) + cellGapY, cellSize, cellSize);
+            action++
+          }
         }
-        else if (availableIndex === i && x !== 3) {
-          grid[y][i] = grid[y][x];
-          grid[y][x] = 0;
-          image(squares[grid[y][i]], i * (cellSize + cellGapX) + cellGapX, y * (cellSize + cellGapY) + cellGapY, cellSize, cellSize);
-        }
-        else if (i - availableIndex === 1 && i - x > 1 && grid[y][availableIndex] !== grid[y][i]){
+
+        else if (availableIndex === 3 && x !== 3) {
           grid[y][availableIndex] = grid[y][x];
-          grid[y][x] = 0; 
+          grid[y][x] = 0;
           image(squares[grid[y][availableIndex]], availableIndex * (cellSize + cellGapX) + cellGapX, y * (cellSize + cellGapY) + cellGapY, cellSize, cellSize);
+          action++;
         }
-      } 
+      }
     }
   }
 }
 
-function mergeRight(y, x, i) {
-  grid[y][x] = 0;
-  grid[y][i] = (grid[y][i]) + 1;
-  image(squares[grid[y][i]], i * (cellSize + cellGapX) + cellGapX, y * (cellSize + cellGapY) + cellGapY, cellSize, cellSize);
-}
-
 function moveLeft() {
+  let alreadyMerged = [];
+  action = 0;
+
   for (let x = 0; x < COLS; x++) {
     for (let y = 0; y < ROWS; y++) {
       if (grid[y][x] !== 0) {
         let i = x;
-        let availableIndex = 0;
+        let availableIndex;
+
+        if (x === 0) {
+          availableIndex = 0;
+        }
+        else {
+          availableIndex = i;
+        }
 
         while (i > 0) {
-          availableIndex = i;
-          if (grid[y][i-1] === 0) {
+          if (grid[y][i - 1] === 0) {
             availableIndex--;
           }
           i--;
         }
-        
-        if (grid[y][x] === grid[y][i] && availableIndex - i === 1) {
-          mergeLeft(y, x, i);
+
+        if (availableIndex !== 0) {
+          if (grid[y][x] === grid[y][availableIndex - 1]) {
+            mergeLeftRight(y, x, availableIndex, alreadyMerged, -1);
+            action++;
+          }
+          else if (grid[y][availableIndex] !== grid[y][availableIndex - 1] && availableIndex !== x) {
+            grid[y][availableIndex] = grid[y][x];
+            grid[y][x] = 0;
+            image(squares[grid[y][availableIndex]], availableIndex * (cellSize + cellGapX) + cellGapX, y * (cellSize + cellGapY) + cellGapY, cellSize, cellSize);
+            action++
+          }
         }
-        else if (availableIndex === i && x !== 0) {
-          grid[y][i] = grid[y][x];
-          grid[y][x] = 0;
-          image(squares[grid[y][i]], i * (cellSize + cellGapX) + cellGapX, y * (cellSize + cellGapY) + cellGapY, cellSize, cellSize);
-        }
-        else if (availableIndex - i === 1 && x - i > 1 && grid[y][availableIndex] !== grid[y][i]){
+
+        else if (availableIndex === 0 && x !== 0) {
           grid[y][availableIndex] = grid[y][x];
-          grid[y][x] = 0; 
+          grid[y][x] = 0;
           image(squares[grid[y][availableIndex]], availableIndex * (cellSize + cellGapX) + cellGapX, y * (cellSize + cellGapY) + cellGapY, cellSize, cellSize);
+          action++;
         }
-      } 
+      }
     }
   }
 }
 
-function mergeLeft(y, x, i) {
-  grid[y][x] = 0;
-  grid[y][i] = (grid[y][i]) + 1;
-  image(squares[grid[y][i]], i * (cellSize + cellGapX) + cellGapX, y * (cellSize + cellGapY) + cellGapY, cellSize, cellSize);
+function mergeLeftRight(y, x, i, array, oneSign) {
+  let proceed = false;
+  if (array.length === 0) {
+    proceed = true;
+  }
+  else {
+    for (let nums in array) {
+      if (array[nums][0] !== i + oneSign && array[nums][1] !== x) {
+        proceed = true;  
+      }
+    }
+  }
+  if (proceed === true) {
+    grid[y][i + oneSign] = (grid[y][i + oneSign]) + 1;
+    grid[y][x] = 0;
+    image(squares[grid[y][i + oneSign]], (i + oneSign) * (cellSize + cellGapX) + cellGapX, y * (cellSize + cellGapY) + cellGapY, cellSize, cellSize);
+    array.push([y, i + oneSign]);
+  }
+  else {
+    grid[y][i] = grid[y][x];
+    image(squares[grid[y][i]], i * (cellSize + cellGapX) + cellGapX, y * (cellSize + cellGapY) + cellGapY, cellSize, cellSize);
+    grid[y][x] = 0;
+  }
 }
-
