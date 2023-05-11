@@ -15,6 +15,8 @@ let cellGapX = 20;
 let cellGapY = 20;
 let squares = [0];
 let action = 0;
+let win = false;
+let lose = false;
 
 // this function preloads an image for each value and pushes them into an array. The index of the array needs to be raised to the
 // power of 2 to determine the value of each image (square).
@@ -40,22 +42,30 @@ function setup() {
 
   background(95);
   displayGrid();
-  grid[1][0] = 2;
-  grid[2][0] = 1;
-  grid[3][0] = 1;
-  grid[2][2] = 1;
-  grid[3][2] = 1;
-  image(squares[2], 0 * (cellSize + cellGapX) + cellGapX, 1 * (cellSize + cellGapY) + cellGapY, cellSize, cellSize);
-  image(squares[1], 0 * (cellSize + cellGapX) + cellGapX, 2 * (cellSize + cellGapY) + cellGapY, cellSize, cellSize);
-  image(squares[1], 0 * (cellSize + cellGapX) + cellGapX, 3 * (cellSize + cellGapY) + cellGapY, cellSize, cellSize);
-  image(squares[1], 2 * (cellSize + cellGapX) + cellGapX, 2 * (cellSize + cellGapY) + cellGapY, cellSize, cellSize);
-  image(squares[1], 2 * (cellSize + cellGapX) + cellGapX, 3 * (cellSize + cellGapY) + cellGapY, cellSize, cellSize);
-  // beginGame();
+  beginGame();
 }
 
 // the only thing in the draw function is a function that resets the displayed blocks every time blocks are shifted around
 function draw() {
   resetGrid()
+  let counter = 0;
+  if (win === false) {
+    for (let y = 0; y < ROWS; y++) {
+      for (let x = 0; x < COLS; x++) {
+        if (grid[y][x] === 11) {
+          win = true;
+        }
+      }
+    }
+  }
+  for (let y = 0; y < ROWS; y++) {
+    for (let x = 0; x < COLS; x++) {
+      if (grid[y][x] !== 0) {
+        win = true;
+      }
+    }
+  }
+  
 }
 
 // If a key is pressed, then blocks are moved. If no blocks move when a key is pressed, a block is not spawned.
