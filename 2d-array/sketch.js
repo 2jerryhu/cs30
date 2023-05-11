@@ -40,7 +40,17 @@ function setup() {
 
   background(95);
   displayGrid();
-  beginGame();
+  grid[1][0] = 2;
+  grid[2][0] = 1;
+  grid[3][0] = 1;
+  grid[2][2] = 1;
+  grid[3][2] = 1;
+  image(squares[2], 0 * (cellSize + cellGapX) + cellGapX, 1 * (cellSize + cellGapY) + cellGapY, cellSize, cellSize);
+  image(squares[1], 0 * (cellSize + cellGapX) + cellGapX, 2 * (cellSize + cellGapY) + cellGapY, cellSize, cellSize);
+  image(squares[1], 0 * (cellSize + cellGapX) + cellGapX, 3 * (cellSize + cellGapY) + cellGapY, cellSize, cellSize);
+  image(squares[1], 2 * (cellSize + cellGapX) + cellGapX, 2 * (cellSize + cellGapY) + cellGapY, cellSize, cellSize);
+  image(squares[1], 2 * (cellSize + cellGapX) + cellGapX, 3 * (cellSize + cellGapY) + cellGapY, cellSize, cellSize);
+  // beginGame();
 }
 
 // the only thing in the draw function is a function that resets the displayed blocks every time blocks are shifted around
@@ -48,6 +58,7 @@ function draw() {
   resetGrid()
 }
 
+// If a key is pressed, then blocks are moved. If no blocks move when a key is pressed, a block is not spawned.
 function keyPressed(){
   if (keyCode === 40) {
     moveDown();
@@ -202,6 +213,7 @@ function moveDown() {
   for (let y = ROWS - 1; y >= 0; y--) {
     for (let x = 0; x < COLS; x++) {
       if (grid[y][x] !== 0) {
+        console.log(y);
         let i = y;
         // the availableIndex variable's goal is to return the availible grid index that the square can move to.
         let availableIndex;
@@ -307,21 +319,24 @@ function moveUp() {
 function mergeUpDown(y, x, i, array, oneSign) {
   // The array that is passed into this function is the alreadyMerged array. This array stores the location of a square if it has already
   // been merged with another square. The same square cannot merge twice, so this array is used to prevent that. 
-
   let proceed = false;
+  let dontGoHere = [];
 
   // If there are no squares that have already been merged, then proceed on
   if (array.length === 0) {
     proceed = true;
   }
   // If there are elements in the array, then the for loop compares the square that wants to be merged and the squares that have already been merged
-  // Also, if i + 1 is equal to 0 or 3, then the function can proceed on.
   else {
     for (let nums in array) {
-      if (array[nums][0] !== (i + oneSign) && array[nums][1] !== x || (i + oneSign) === 3 || (i + oneSign) === 0) {
-        proceed = true;  
+      if (array[nums][1] === x) {
+        dontGoHere = [array[nums][0], array[nums][1]];
       }
     }
+  }
+  console.log(dontGoHere);
+  if (dontGoHere[0] !== i + oneSign) {
+    proceed = true;
   }
 
   // if the function is allowed to proceed, then the 2 blocks will merge. One of the blocks will be set to 0, while the other block will have
@@ -332,7 +347,7 @@ function mergeUpDown(y, x, i, array, oneSign) {
     image(squares[grid[i + oneSign][x]], x * (cellSize + cellGapX) + cellGapX, (i + oneSign) * (cellSize + cellGapY) + cellGapY, cellSize, cellSize);
     array.push([i + oneSign, x]);
   }
-  // If it is not allowed to merge (more than once), then the availible index is set to the original location, and the original location
+  // If it is not allowed to merge (more than once), then the value of the availible index is set to the original location, and the original location
   // is set to 0.
   else if (y !== i) {  
     console.log([y, i]);
@@ -340,8 +355,10 @@ function mergeUpDown(y, x, i, array, oneSign) {
     grid[y][x] = 0;
     image(squares[grid[i][x]], x * (cellSize + cellGapX) + cellGapX, i * (cellSize + cellGapY) + cellGapY, cellSize, cellSize);
   }
+  console.log(array);
 }
 
+// The code below is the same as above, except x and y are switched
 function moveRight() {
   let alreadyMerged = [];
   action = 0;
@@ -440,16 +457,23 @@ function moveLeft() {
 
 function mergeLeftRight(y, x, i, array, oneSign) {
   let proceed = false;
+  let dontGoHere = [];
+
   if (array.length === 0) {
     proceed = true;
   }
   else {
     for (let nums in array) {
-      if (array[nums][0] !== (i + oneSign) && array[nums][1] !== x || (i + oneSign) === 3 || (i + oneSign) === 0) {
-        proceed = true;  
+      if (array[nums][0] === y) {
+        dontGoHere = [array[nums][0], array[nums][1]];
       }
     }
   }
+
+  if (dontGoHere[1] !== i + oneSign) {
+    proceed = true;
+  }
+
   if (proceed === true) {
     grid[y][i + oneSign] = (grid[y][i + oneSign]) + 1;
     grid[y][x] = 0;
