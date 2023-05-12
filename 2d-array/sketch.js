@@ -17,6 +17,9 @@ let squares = [0];
 let action = 0;
 let win = false;
 let lose = false;
+let alphaValue = 0;
+let restart;
+let continueGame;
 
 // this function preloads an image for each value and pushes them into an array. The index of the array needs to be raised to the
 // power of 2 to determine the value of each image (square).
@@ -47,8 +50,12 @@ function setup() {
 
 // the only thing in the draw function is a function that resets the displayed blocks every time blocks are shifted around
 function draw() {
-  resetGrid()
-  let counter = 0;
+  resetGrid();
+  checkWin();
+  checkLoss();
+}
+
+function checkWin() {
   if (win === false) {
     for (let y = 0; y < ROWS; y++) {
       for (let x = 0; x < COLS; x++) {
@@ -58,14 +65,59 @@ function draw() {
       }
     }
   }
+}
+
+function checkLoss() {
+  let counter1 = 0;
+  let counter2 = 0;
   for (let y = 0; y < ROWS; y++) {
     for (let x = 0; x < COLS; x++) {
       if (grid[y][x] !== 0) {
-        win = true;
+        counter1++;
       }
     }
   }
-  
+  if (counter1 === 16) {
+    for (let y = 0; y < ROWS; y++) {
+      for (let x = 1; x < 3; x++) {
+        if (grid[y][x] !== grid[y][x - 1] && grid[y][x] !== grid[y][x + 1]) {
+          counter2++
+        }
+      }
+    }
+    for (let y = 1; y < 3; y++) {
+      for (let x = 0; x < COLS; x++) {
+        if (grid[y][x] !== grid[y - 1][x] && grid[y][x] !== grid[y + 1][x]) {
+          counter2++
+        }
+      }
+    }
+  }
+  if (counter2 === 16) {
+    lose = true;
+    fadeIn();
+  }
+}
+
+function fadeIn() {
+  textSize(100);
+  textAlign(CENTER);
+  fill("black");
+  text("Game Over!", width/2, height/2);
+  restart = createButton("Restart?");
+  restart.position(width/2, height/2 + 100);
+  restart.mousePressed(restartGame);
+}
+
+function restartGame() {
+  clear();
+  for (let y = 0; y < ROWS; y++) {
+    for (let x = 0; x < COLS; x++) {
+      grid[y][x] = 0;
+    }
+  }
+  beginGame;
+  lose = false;
 }
 
 // If a key is pressed, then blocks are moved. If no blocks move when a key is pressed, a block is not spawned.
@@ -223,7 +275,6 @@ function moveDown() {
   for (let y = ROWS - 1; y >= 0; y--) {
     for (let x = 0; x < COLS; x++) {
       if (grid[y][x] !== 0) {
-        console.log(y);
         let i = y;
         // the availableIndex variable's goal is to return the availible grid index that the square can move to.
         let availableIndex;
@@ -344,7 +395,6 @@ function mergeUpDown(y, x, i, array, oneSign) {
       }
     }
   }
-  console.log(dontGoHere);
   if (dontGoHere[0] !== i + oneSign) {
     proceed = true;
   }
@@ -360,12 +410,10 @@ function mergeUpDown(y, x, i, array, oneSign) {
   // If it is not allowed to merge (more than once), then the value of the availible index is set to the original location, and the original location
   // is set to 0.
   else if (y !== i) {  
-    console.log([y, i]);
     grid[i][x] = grid[y][x];
     grid[y][x] = 0;
     image(squares[grid[i][x]], x * (cellSize + cellGapX) + cellGapX, i * (cellSize + cellGapY) + cellGapY, cellSize, cellSize);
   }
-  console.log(array);
 }
 
 // The code below is the same as above, except x and y are switched
