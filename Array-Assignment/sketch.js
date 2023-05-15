@@ -25,17 +25,12 @@ class PianoKey {
   }
 
   update() {
-    if (
-      mouseX > this.pos &&
-      mouseX < this.pos + this.width &&
-      mouseY > 100 &&
-      mouseY < 100 + this.height &&
-      mouseIsPressed
-    ) {
+    if (mouseX > this.pos && mouseX < this.pos + this.width && mouseY > 100 && mouseY < 100 + this.height && mouseIsPressed) {
       console.log(this.pitch, this.type, this.octave);
       playSound(this.pitch.concat(this.octave));
       return true;
-    } else {
+    } 
+    else {
       return false;
     }
   }
@@ -59,13 +54,7 @@ function setup() {
   let offset = 0;
 
   for (let i = 0; i < 5 * octaves; i++) {
-    keys.push(
-      new PianoKey(
-        "black",
-        i * whiteWidth + whiteWidth - blackWidth / 2 + offset,
-        i
-      )
-    );
+    keys.push(new PianoKey("black", i * whiteWidth + whiteWidth - blackWidth / 2 + offset, i));
     if (i % 5 === 1 || i % 5 === 4) {
       offset += whiteWidth;
     }
