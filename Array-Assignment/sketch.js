@@ -1,14 +1,21 @@
+
+
+
+
 class PianoKey {
   constructor(type, pos, pitch) {
+    // the type of key will be either black or white, and the position will be set later
     this.type = type;
     this.pos = pos;
     if (type === "black") {
       this.width = blackWidth;
       this.height = 220;
       this.color = "black";
+      // this uses a later called array to figure out the pitch index
       this.pitch = blackNotes[pitch % 5];
       this.octave = Math.floor(pitch / 5) + 4;
-    } else {
+    } 
+    else {
       this.width = whiteWidth;
       this.height = 340;
       this.color = "white";
@@ -18,15 +25,18 @@ class PianoKey {
   }
 
   display() {
-    push();
+    // push();
     fill(this.color);
     rect(this.pos, 100, this.width, this.height);
-    pop();
+    // pop();
   }
 
   update() {
+    // if the mouse is pressed within the key dimensions, then play the pitch
     if (mouseX > this.pos && mouseX < this.pos + this.width && mouseY > 100 && mouseY < 100 + this.height && mouseIsPressed) {
       console.log(this.pitch, this.type, this.octave);
+
+      // this passes in the note that will be played when the playSound function is executed below. Ex. Pitch is C, and in the 4th octave
       playSound(this.pitch.concat(this.octave));
       return true;
     } 
@@ -80,13 +90,17 @@ function updateKeys() {
       if (key.update()) {
         break;
       }
-    } else {
+    } 
+    else {
       key.update();
     }
   }
 }
 
+// This function passes in a note to be played
 function playSound(note) {
+  // initializes audio system
   userStartAudio();
+  // plays the "note," with a duration length of "1," with the lowest volume of "0," and to start the note immediately (0)
   monoSynth.play(note, 1, 0, 0);
 }
