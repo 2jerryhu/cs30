@@ -1,6 +1,9 @@
-
-
-
+// Piano Array
+// Jerry Hu
+// May 18th (yikes, sorry)
+//
+// Extra for Experts:
+// - I used the p5.sound library to create the piano. When a key is clicked, a sound is played. I had to add the library in the index.html file
 
 class PianoKey {
   constructor(type, pos, pitch) {
@@ -28,16 +31,27 @@ class PianoKey {
   }
 
   display() {
-    // push();
+    push();
+    // if the key is pressed, then display it as blue
     if (this.isKeyPressed && this.type === "black") {
       fill("blue");
+    } 
+    // to make sure white doesn't show up as blue when black is pressed, ensure that the mouse is within these parameters
+    else if (this.isKeyPressed && this.type === "white" && (this.pitch === "D" || this.pitch === "G" || this.pitch === "A") && (mouseY > this.pianoPosition + this.height - 120 || mouseX > this.pos + blackWidth/2) && (mouseY > this.pianoPosition + this.height - 120 || mouseX < this.pos + whiteWidth - blackWidth/2)) {
+      fill("blue");
     }
+    else if (this.isKeyPressed && this.type === "white" && (this.pitch === "C" || this.pitch === "F") && (mouseY > this.pianoPosition + this.height - 120 || mouseX < this.pos + whiteWidth - blackWidth/2)) {
+      fill("blue");
+    }
+    else if (this.isKeyPressed && this.type === "white" && (this.pitch === "E" || this.pitch === "B") && (mouseY > this.pianoPosition + this.height - 120 || mouseX > this.pos + blackWidth/2)) {
+      fill("blue");
+    }
+    // if the key isn't clicked, then just fill it with its normal color
     else {
       fill(this.color);
-      console.log("bello");
     }
     rect(this.pos, this.pianoPosition, this.width, this.height);
-    // pop();
+    pop();
   }
 
   update() {
